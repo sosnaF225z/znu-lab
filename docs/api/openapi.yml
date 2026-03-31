@@ -1,0 +1,101 @@
+openapi: 3.0.3
+info:
+  title: Task Management API
+  description: API для управління проєктами та завданнями
+  version: 1.0.0
+servers:
+  - url: https://api.taskmanager.com/v1
+paths:
+  /projects:
+    get:
+      summary: Отримати всі проєкти
+      responses:
+        "200":
+          description: Список проєктів
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+    post:
+      summary: Створити новий проєкт
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+      responses:
+        "201":
+          description: Проєкт створено
+
+  /projects/{projectId}/tasks:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Отримати завдання проєкту
+      responses:
+        "200":
+          description: Список завдань
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+    post:
+      summary: Додати завдання до проєкту
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskInput"
+      responses:
+        "201":
+          description: Завдання створено
+
+components:
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+    ProjectInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        status:
+          type: string
+          enum: [todo, in-progress, done]
+    TaskInput:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+        status:
+          type: string
+          default: todo
