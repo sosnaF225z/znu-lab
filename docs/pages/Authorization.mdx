@@ -1,0 +1,28 @@
+## 🔑 Authorization
+
+The Task Management API uses **API Keys** or **Bearer Tokens** to ensure that only authorized users can access project data.
+
+### 1. Obtaining your Credentials
+To interact with the API, you need an `api_key`. Usually, this is generated in your User Profile under the "Developer Settings" tab of the Task Management Web Portal.
+
+### 2. Configuring the Client
+Before making any requests, you must initialize the configuration object with your credentials. 
+
+> **Important:** Never hardcode your API key in public repositories. Use environment variables.
+
+```python
+import os
+import task_management_api
+
+# 1. Initialize Configuration
+configuration = task_management_api.Configuration(
+    host = "[https://api.taskmanager.com/v1](https://api.taskmanager.com/v1)"
+)
+
+# 2. Setup Authentication (API Key example)
+configuration.api_key['ApiKeyAuth'] = os.getenv('TASK_API_KEY')
+
+# 3. Create an API Client instance
+with task_management_api.ApiClient(configuration) as api_client:
+    # Now you are authorized to call API methods
+    pass

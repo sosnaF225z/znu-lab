@@ -31,11 +31,13 @@ const config: ZudokuConfig = {
           items: [
             {
               type: "doc",
-              file: "introduction",
+              file: "Installation",
+              label: "Installation",
             },
             {
               type: "doc",
-              file: "markdown",
+              file: "Authorization",
+              label: "Authorization"
             },
           ],
         },
@@ -47,12 +49,7 @@ const config: ZudokuConfig = {
           items: [
             {
               type: "link",
-              label: "Zuplo Docs",
-              to: "https://zuplo.com/docs/dev-portal/introduction",
-            },
-            {
-              type: "link",
-              label: "Developer Portal Docs",
+              label: "SDK Sources",
               to: "https://zuplo.com/docs/dev-portal/introduction",
             },
           ],
@@ -64,6 +61,11 @@ const config: ZudokuConfig = {
       to: "/api",
       label: "API Reference",
     },
+    {
+      type: "doc",
+      file: "about",
+      label: "About"
+    }
   ],
   redirects: [{ from: "/", to: "/api" }],
   apis: [

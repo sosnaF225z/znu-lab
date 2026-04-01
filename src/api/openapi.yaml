@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  description: A specialized API for managing organizational projects and their underlying
+    tasks.
+  title: Task Management API
+  version: 1.0.0
+servers:
+- description: Production server
+  url: https://api.taskmanager.com/v1
+paths:
+  /projects:
+    get:
+      operationId: getProjects
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Project"
+                type: array
+          description: A list of projects
+      summary: List all projects
+      x-accepts:
+      - application/json
+    post:
+      operationId: createProject
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+        required: true
+      responses:
+        "201":
+          description: Project successfully created
+      summary: Create a new project
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /projects/{projectId}/tasks:
+    get:
+      operationId: getProjectTasks
+      parameters:
+      - explode: false
+        in: path
+        name: projectId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Task"
+                type: array
+          description: List of tasks associated with the project
+      summary: Get tasks for a specific project
+      x-accepts:
+      - application/json
+    post:
+      operationId: createTask
+      parameters:
+      - explode: false
+        in: path
+        name: projectId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskInput"
+        required: true
+      responses:
+        "201":
+          description: Task successfully created
+      summary: Add a task to a project
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    Project:
+      example:
+        name: Website Redesign
+        description: Updating the landing page for 2026
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        id:
+          format: uuid
+          type: string
+        name:
+          example: Website Redesign
+          type: string
+        description:
+          example: Updating the landing page for 2026
+          type: string
+      type: object
+    ProjectInput:
+      example:
+        name: name
+        description: description
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+      required:
+      - name
+      type: object
+    Task:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        title: Design Hero Section
+        status: todo
+      properties:
+        id:
+          format: uuid
+          type: string
+        title:
+          example: Design Hero Section
+          type: string
+        status:
+          default: todo
+          enum:
+          - todo
+          - in-progress
+          - done
+          type: string
+      type: object
+    TaskInput:
+      example:
+        title: title
+        status: todo
+      properties:
+        title:
+          type: string
+        status:
+          enum:
+          - todo
+          - in-progress
+          - done
+          type: string
+      required:
+      - title
+      type: object
+

@@ -1,17 +1,19 @@
 openapi: 3.0.3
 info:
   title: Task Management API
-  description: API для управління проєктами та завданнями
+  description: A specialized API for managing organizational projects and their underlying tasks.
   version: 1.0.0
 servers:
   - url: https://api.taskmanager.com/v1
+    description: Production server
 paths:
   /projects:
     get:
-      summary: Отримати всі проєкти
+      summary: List all projects
+      operationId: getProjects
       responses:
         "200":
-          description: Список проєктів
+          description: A list of projects
           content:
             application/json:
               schema:
@@ -19,7 +21,8 @@ paths:
                 items:
                   $ref: "#/components/schemas/Project"
     post:
-      summary: Створити новий проєкт
+      summary: Create a new project
+      operationId: createProject
       requestBody:
         required: true
         content:
@@ -28,7 +31,7 @@ paths:
               $ref: "#/components/schemas/ProjectInput"
       responses:
         "201":
-          description: Проєкт створено
+          description: Project successfully created
 
   /projects/{projectId}/tasks:
     parameters:
@@ -37,11 +40,13 @@ paths:
         required: true
         schema:
           type: string
+          format: uuid
     get:
-      summary: Отримати завдання проєкту
+      summary: Get tasks for a specific project
+      operationId: getProjectTasks
       responses:
         "200":
-          description: Список завдань
+          description: List of tasks associated with the project
           content:
             application/json:
               schema:
@@ -49,7 +54,8 @@ paths:
                 items:
                   $ref: "#/components/schemas/Task"
     post:
-      summary: Додати завдання до проєкту
+      summary: Add a task to a project
+      operationId: createTask
       requestBody:
         required: true
         content:
@@ -58,7 +64,7 @@ paths:
               $ref: "#/components/schemas/TaskInput"
       responses:
         "201":
-          description: Завдання створено
+          description: Task successfully created
 
 components:
   schemas:
@@ -70,8 +76,11 @@ components:
           format: uuid
         name:
           type: string
+          example: "Website Redesign"
         description:
           type: string
+          example: "Updating the landing page for 2026"
+
     ProjectInput:
       type: object
       required: [name]
@@ -80,16 +89,21 @@ components:
           type: string
         description:
           type: string
+
     Task:
       type: object
       properties:
         id:
           type: string
+          format: uuid
         title:
           type: string
+          example: "Design Hero Section"
         status:
           type: string
           enum: [todo, in-progress, done]
+          default: todo
+
     TaskInput:
       type: object
       required: [title]
@@ -98,4 +112,4 @@ components:
           type: string
         status:
           type: string
-          default: todo
+          enum: [todo, in-progress, done]
