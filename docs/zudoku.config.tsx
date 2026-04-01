@@ -50,7 +50,7 @@ const config: ZudokuConfig = {
             {
               type: "link",
               label: "SDK Sources",
-              to: "https://zuplo.com/docs/dev-portal/introduction",
+              to: "https://github.com/sosnaF225z/znu-lab/tree/main/src",
             },
           ],
         },
